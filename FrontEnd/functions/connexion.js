@@ -1,6 +1,3 @@
-/////////////////////////////////
-//Fonction/logique de connexion
-/////////////////////////////////
 async function connexionUser() {
   // envoi une requête HTTP POST à l'API de connexion avec les informations d'authentification de l'architecte
 
@@ -9,6 +6,7 @@ async function connexionUser() {
   const response = await fetch("http://localhost:5678/api/users/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
+    ///Permet de pouvoir traiter les infos du formData en JSON
     body: JSON.stringify(Object.fromEntries(formData)),
   });
 
@@ -19,19 +17,17 @@ async function connexionUser() {
   } else {
     // affiche à l'user un message d'erreur quand mdp et/ou email incorrect
     alert("Le mot de passe et/ou l'e-mail est incorrecte");
+    sessionStorage.setItem("isLoggedIn", false);
+    sessionStorage.setItem("isLoggedOut", true);
+    const isLoggedOutList = document.querySelectorAll(".isLoggedOut");
+    isLoggedOutList.forEach((outList) => {
+      outList.hidden = false;
+    });
+    const isLoggedInList = document.querySelectorAll(".isLoggedIn");
+    isLoggedInList.forEach((inList) => {
+      inList.hidden = true;
+    });
   }
+
+  // if loggedIn
 }
-
-///////////////////////////////////
-//ICi on ecoute le bouton submit pour lancer la fonction connexionUser plus haut
-///////////////////////////////////
-const form = document.querySelector("#login form");
-form.addEventListener("submit", async (event) => {
-  event.preventDefault(); // empêcher le rechargement de la page par défaut
-  // paramètres d'appel du fetch
-
-  const email = document.querySelector("#login-email").value;
-  const password = document.querySelector("#login-password").value;
-
-  connexionUser();
-});
